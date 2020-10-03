@@ -16,20 +16,33 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-const checkInputFile = (fileName) => {
+const addToOutputFile = (fileName, content) => {
   if(!fileName){
+    console.log(content);
+  }else{
+    fs.appendFile('output.txt', content , 'utf8', err => {
+      if (err)
+        throw err;
+      console.log('Done');
+    });
+  }
+};
+
+const checkInputFile = (fileName) => {
+  if (!fileName) {
     rl.on('line', (line) => {
-      console.log(`Received: ${line}`);
+      addToOutputFile(args.output, line + '\n');
     });
   } else {
-    try{
+    try {
       const content = fs.readFileSync(fileName, 'utf8');
-      console.log(content);
+      addToOutputFile(args.output, content);
     } catch (e) {
       console.log('Incorrect file name')
     }
-
   }
 };
 
 checkInputFile(args.input);
+
+
