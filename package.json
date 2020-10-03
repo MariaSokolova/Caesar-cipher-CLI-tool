@@ -1,0 +1,22 @@
+{
+  "name": "caesar-cipher-cli-tool",
+  "version": "1.0.0",
+  "description": "pet project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MariaSokolova/Caesar-cipher-CLI-tool.git"
+  },
+  "author": "Mariia Sokolova",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MariaSokolova/Caesar-cipher-CLI-tool/issues"
+  },
+  "homepage": "https://github.com/MariaSokolova/Caesar-cipher-CLI-tool#readme",
+  "dependencies": {
+    "minimist": "^1.2.5"
+  }
+}
