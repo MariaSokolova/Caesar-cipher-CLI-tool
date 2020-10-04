@@ -2,7 +2,8 @@ const minimist = require('minimist');
 const fs = require('fs');
 const readline = require('readline');
 
-const  encrypt = require('./caeser-cipher-function');
+const encrypt = require('./caeser-cipher-function');
+const validation = require('./validation');
 
 const args = minimist(process.argv.slice(2), {
   alias: {
@@ -13,6 +14,8 @@ const args = minimist(process.argv.slice(2), {
   }
 });
 
+validation(args);
+
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
@@ -20,14 +23,20 @@ const rl = readline.createInterface({
 
 const addToOutputFile = (fileName, content) => {
   const res = encrypt(content, args.shift, args.action);
-  if(!fileName){
+  if (!fileName) {
     console.log(res);
-  }else{
-    fs.appendFile('output.txt', res , 'utf8', err => {
-      if (err)
-        throw err;
-      console.log('Done');
-    });
+  } else {
+    try {
+      fs.appendFile(fileName, res, 'utf8', err => {
+        if (err)
+          throw err;
+        console.log('Message was encrypted and added to the output file');
+        process.exit(1);
+      });
+    } catch (e) {
+      console.error(`${fileName} is a wrong name of output file`);
+      process.exit(1);
+    }
   }
 };
 
@@ -41,7 +50,8 @@ const checkInputFile = (fileName) => {
       const content = fs.readFileSync(fileName, 'utf8');
       addToOutputFile(args.output, content);
     } catch (e) {
-      console.log('Incorrect file name')
+      console.error(`${fileName} is a wrong name of input file`);
+      process.exit(1);
     }
   }
 };
