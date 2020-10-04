@@ -2,6 +2,8 @@ const minimist = require('minimist');
 const fs = require('fs');
 const readline = require('readline');
 
+const  encrypt = require('./caeser-cipher-function');
+
 const args = minimist(process.argv.slice(2), {
   alias: {
     s: 'shift',
@@ -17,10 +19,11 @@ const rl = readline.createInterface({
 });
 
 const addToOutputFile = (fileName, content) => {
+  const res = encrypt(content, args.shift, args.action);
   if(!fileName){
-    console.log(content);
+    console.log(res);
   }else{
-    fs.appendFile('output.txt', content , 'utf8', err => {
+    fs.appendFile('output.txt', res , 'utf8', err => {
       if (err)
         throw err;
       console.log('Done');
