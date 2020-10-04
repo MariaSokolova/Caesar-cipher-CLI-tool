@@ -22,7 +22,7 @@ If 'input' and/or 'output' options are absent, then reading and writing well be 
 
 ### Example of usage:
 
-$node caesar-cipher -s 2 -a encode -i input.txt -o output.txt
+$node caesar-cipher -s 1 -a encode -i input.txt -o output.txt
 
 Before:
 

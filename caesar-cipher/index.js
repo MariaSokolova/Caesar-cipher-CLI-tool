@@ -16,11 +16,6 @@ const args = minimist(process.argv.slice(2), {
 
 validation(args);
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
-
 const addToOutputFile = (fileName, content) => {
   const res = encrypt(content, args.shift, args.action);
   if (!fileName) {
@@ -31,7 +26,6 @@ const addToOutputFile = (fileName, content) => {
         if (err)
           throw err;
         console.log('Message was encrypted and added to the output file');
-        process.exit(1);
       });
     } catch (e) {
       console.error(`${fileName} is a wrong name of output file`);
@@ -41,7 +35,12 @@ const addToOutputFile = (fileName, content) => {
 };
 
 const checkInputFile = (fileName) => {
+
   if (!fileName) {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout
+    });
     rl.on('line', (line) => {
       addToOutputFile(args.output, line + '\n');
     });
