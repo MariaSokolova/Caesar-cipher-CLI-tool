@@ -1,8 +1,2 @@
 Ifmmp 123 !! Привет
-Ifmmp
-Ifmmp 123 !! Привет
-rxf
-bbb
-bbb
-ttt
-ccc
+
