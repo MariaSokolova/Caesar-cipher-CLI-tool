@@ -1,6 +1,7 @@
 const minimist = require('minimist');
 const fs = require('fs');
 const { Transform } = require('stream');
+const Path = require('path');
 
 const encrypt = require('./caeser-cipher-function');
 const validation = require('./validation');
@@ -20,7 +21,9 @@ const getReadableStream = (fileName) => {
   if (!fileName) {
     return process.stdin;
   } else {
-    return fs.createReadStream(fileName, 'utf8');
+    return fs.createReadStream(
+      Path.resolve(__dirname, fileName), 'utf-8'
+    );
   }
 };
 
@@ -28,7 +31,8 @@ const getWritableStream = (fileName) => {
   if (!fileName) {
     return process.stdout;
   } else {
-    return fs.createWriteStream(fileName, {flags:'a'});
+    return fs.createWriteStream(
+      Path.resolve(__dirname, fileName), { flags: 'a' });
   }
 };
 const toEncrypt = new Transform({
@@ -38,6 +42,17 @@ const toEncrypt = new Transform({
   }
 });
 
+const handleError = (e) => {
+  console.error(e.message);
+  process.exit(1);
+};
+
 getReadableStream(args.input)
+  .on('error', function(e){
+    handleError(e)
+  })
   .pipe(toEncrypt)
-  .pipe(getWritableStream(args.output));
+  .pipe(getWritableStream(args.output))
+  .on('error', function (e) {
+    handleError(e)
+  });

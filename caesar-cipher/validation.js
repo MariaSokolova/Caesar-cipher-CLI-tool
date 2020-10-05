@@ -21,13 +21,13 @@ const validation = (args) => {
     }
   }
 
-  if (!isAction) {
-    console.error('"-a action" is required, valid params are "encode" or "decode"');
+  if (!isShift || typeof isShift !== 'number' || isShift < 0 ) {
+    console.error('"-s shift" is required, should be a positive number');
     process.exit(1);
   }
 
-  if (!isShift || typeof isShift !== 'number' || isShift < 0 ) {
-    console.error('"-s shift" is required, should be a positive number');
+  if (!isAction) {
+    console.error('"-a action" is required, valid params are "encode" or "decode"');
     process.exit(1);
   }
 };
