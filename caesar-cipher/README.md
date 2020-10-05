@@ -3,7 +3,7 @@
 This is a command line application. It encrypts and decrypts with Caesar's cipher  only letters of the Latin alphabet. All other characters, numbers and symbols remain unchanged
 
 ### How to use
-Enter the following into the command line: 'node caesar-cipher [options]', where options ace command line parameters (short alias and full name)
+Enter the following into the command line: 'node caesar-cipher [options]', where options are command line parameters (short alias and full name)
 
 
 -s, --shift: a shift;
