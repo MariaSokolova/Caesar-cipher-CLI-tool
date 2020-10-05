@@ -18,7 +18,7 @@ The 'shift' option should be positive integer
 
 The 'action' can take the value of 'encode' or 'decode'
 
-If 'input' and/or 'output' options are absent, then reading and writing well be carried out from/to the command line 
+If 'input' and/or 'output' options are absent, then reading and writing will be carried out from/to the command line 
 
 ### Example of usage:
 
