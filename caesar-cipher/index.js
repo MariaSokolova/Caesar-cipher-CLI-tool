@@ -1,6 +1,6 @@
 const minimist = require('minimist');
 const fs = require('fs');
-const readline = require('readline');
+const { Transform } = require('stream');
 
 const encrypt = require('./caeser-cipher-function');
 const validation = require('./validation');
@@ -16,45 +16,28 @@ const args = minimist(process.argv.slice(2), {
 
 validation(args);
 
-const addToOutputFile = (fileName, content) => {
-  const res = encrypt(content, args.shift, args.action);
+const getReadableStream = (fileName) => {
   if (!fileName) {
-    console.log(res);
+    return process.stdin;
   } else {
-    try {
-      fs.appendFile(fileName, res, 'utf8', err => {
-        if (err)
-          throw err;
-        console.log('Message was encrypted and added to the output file');
-      });
-    } catch (e) {
-      console.error(`${fileName} is a wrong name of output file`);
-      process.exit(1);
-    }
+    return fs.createReadStream(fileName, 'utf8');
   }
 };
 
-const checkInputFile = (fileName) => {
-
+const getWritableStream = (fileName) => {
   if (!fileName) {
-    const rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout
-    });
-    rl.on('line', (line) => {
-      addToOutputFile(args.output, line + '\n');
-    });
+    return process.stdout;
   } else {
-    try {
-      const content = fs.readFileSync(fileName, 'utf8');
-      addToOutputFile(args.output, content);
-    } catch (e) {
-      console.error(`${fileName} is a wrong name of input file`);
-      process.exit(1);
-    }
+    return fs.createWriteStream(fileName, {flags:'a'});
   }
 };
+const toEncrypt = new Transform({
+  transform(chunk, encoding, callback) {
+    this.push(encrypt(chunk.toString(), args.shift, args.action));
+    callback();
+  }
+});
 
-checkInputFile(args.input);
-
-
+getReadableStream(args.input)
+  .pipe(toEncrypt)
+  .pipe(getWritableStream(args.output));
